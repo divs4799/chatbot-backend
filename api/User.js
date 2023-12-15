@@ -11,6 +11,16 @@ router.get("/",(req,res)=>{
     })
 })
 
+router.get("/home",(req,res)=>{
+    res.json({
+        status: "Sucess",
+        message : "The backend is working fine. "
+    })
+    res.send({
+        status: "Sucess",
+        message : "The backend is working fine. "
+    })
+})
 router.post('/signup',(req,res)=>{
 let {name,email,password} = req.body;
 

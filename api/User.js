@@ -4,7 +4,12 @@ const bcrypt = require('bcrypt');
 const User = require("./../models/UserModel");
 
 
-
+router.get("/",(req,res)=>{
+    res.json({
+        status: "Sucess",
+        message : "The backend is working fine. "
+    })
+})
 
 router.post('/signup',(req,res)=>{
 let {name,email,password} = req.body;

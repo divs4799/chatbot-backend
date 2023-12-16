@@ -133,7 +133,7 @@ router.post("/saveData", async (req,res)=>{
         console.log("true")
         res.json({
             status:"SUCCESS",
-            message:"Your Chat was sucessfully stored in database",
+            message:"Your Chat is too short to save",
         })
     }else{
         // console.log(saveList);
@@ -155,9 +155,10 @@ router.post("/saveData", async (req,res)=>{
         messages:saveList
     }
     result[0].article.push(Chat);
+    console.log(result[0])
     
-   let newResult = await User.findOneAndUpdate({email:email},{article:result.article});
-   await console.log(newResult);
+   let newResult = await User.findOneAndUpdate({email:email},{article:result[0].article});
+   await console.log("result : ",newResult);
     res.json({
         status:"SUCCESS",
         message:"Your Chat was sucessfully stored in database",

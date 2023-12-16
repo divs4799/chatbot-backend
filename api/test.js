@@ -40,7 +40,8 @@ const a =async ()=>{
   let result2 =  await User.find({email:email});
   // console.log(result2)
   console.log("2: ",result2[0].article)
-  
+  result2[0].article.push("hello")
+  console.log(result2[0]);
 }
     
 a();

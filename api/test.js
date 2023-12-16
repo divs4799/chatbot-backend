@@ -13,14 +13,30 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require("./../models/UserModel");
 
-var saveList = [1,2,3,5,4];
-var email = "Test@abc.com";
-let result;
-User.findOne({email:email}).then((response)=>{
-    console.log(response);
-    result = response
-    console.log("res :",result);    
+var saveList = [ {
+    _id: 0,
+    text: 'no please',
+    createdAt: new Date(),
+    user: {
+      _id: 2,
+      name: 'React Native',
+      avatar: 'https://placeimg.com/140/140/any',
+    }
+  },{
+    _id: 1,
+    text: 'not hello',
+    createdAt: new Date(),
+    user: {
+      _id: 1,
+      name: 'React Native',
+      avatar: 'https://placeimg.com/140/140/any',
+    }
+}];
+var newChat = false
+var email = "abc@test.com";
+const a =async ()=>{
+  let result =  await User.findOne({email:email});
+  console.log(result)
+}
     
-    User.findOneAndUpdate({email:email}, update);
-});
-    
+a();

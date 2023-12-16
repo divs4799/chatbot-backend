@@ -16,16 +16,13 @@ router.get("/home",(req,res)=>{
         status: "Sucess",
         message : "The backend is working fine. "
     })
-    res.send({
-        status: "Sucess",
-        message : "The backend is working fine. "
-    })
 })
 router.post('/signup',(req,res)=>{
 let {name,email,password} = req.body;
 
 name =name.trim();
 email = email.trim();
+email = email.toLowercase();
 password = password.trim();
 
 if(name =="" || email ==""|| password ==""){
@@ -90,8 +87,9 @@ if(name =="" || email ==""|| password ==""){
 
 router.post('/signin',(req,res)=>{
 let {email,password} = req.body;
+email = email.toLowercase();
 User.find({email}).then(resultData=>{
-    console.log(resultData)
+    
 
     if(resultData.length==0){
         res.json({
@@ -101,6 +99,7 @@ User.find({email}).then(resultData=>{
     }else{
         bcrypt.compare(password,resultData[0].password).then(result=>{
             if(result){
+                console.log(result);
                 res.json({
                     status:"SUCCESS",
                     message:"User authenticated",
@@ -124,13 +123,62 @@ User.find({email}).then(resultData=>{
 
 })
 
-router.post("/saveData",(req,res)=>{
-    var saveList = req.body;
-    var email = req.body;
-
-    let result = User.findOne({email:email});
+router.post("/saveData", async (req,res)=>{
+    var chatId;
+    var {saveList,email} = req.body;
+    // console.log(saveList);
+    // console.log("length",saveList.length)
+    
+    if(saveList.length < 2){
+        console.log("true")
+        res.json({
+            status:"SUCCESS",
+            message:"Your Chat was sucessfully stored in database",
+        })
+    }else{
+        // console.log(saveList);
         
-    User.findOneAndUpdate({email:email}, update);
+        var chat_title= saveList[1].text;
+        var chat_description = saveList[1].text.substring(0,20)
+        let result = await User.findOne({email:email});
+            chatId = result.article.length+1;
+        var Chat = {
+        chatId:chatId,
+        title:chat_title,
+        time : new Date(),
+        description : chat_description,
+        messages:saveList
+    }
+    result.article.push(Chat);
+    
+   let newResult = await User.findOneAndUpdate({email:email},{article:result.article});
+   await console.log(newResult);
+    res.json({
+        status:"SUCCESS",
+        message:"Your Chat was sucessfully stored in database",
+        data: newResult
+    })
+   
+    }
+
+})
+
+router.post("/getData",async (req,res)=>{
+    var email = req.body.email;
+    console.log(email)
+    let result = await User.findOne({email:email});
+    if(result){
+        res.json({
+           status:"SUCCESS",
+           message:"The Data Was fetched properly",
+           data:result
+        })
+    }else{
+        res.json({
+            status:"failed",
+            message:"There was an error in fetching data from the server"
+         })
+    }
 })
 
 

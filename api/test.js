@@ -36,7 +36,9 @@ var newChat = false
 var email = "abc@test.com";
 const a =async ()=>{
   let result =  await User.findOne({email:email});
-  console.log(result)
+  console.log("1:",result.length)
+  let result2 =  await User.find({email:email});
+  console.log("2: ",result2.length)
 }
     
 a();

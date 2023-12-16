@@ -140,8 +140,13 @@ router.post("/saveData", async (req,res)=>{
         
         var chat_title= saveList[1].text;
         var chat_description = saveList[1].text.substring(0,20)
-        let result = await User.findOne({email:email});
-            chatId = result.article.length+1;
+        let result = await User.find({email:email});
+        if(result.length == 0){
+            chatId = 0;
+        }else{
+            chatId = result[0].article.length+1;
+
+        }
         var Chat = {
         chatId:chatId,
         title:chat_title,

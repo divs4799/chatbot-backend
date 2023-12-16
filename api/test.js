@@ -1,6 +1,6 @@
 const mongoose  = require('mongoose');
-// uri = "mongodb+srv://Test:Test@pdf-cluster.obw3a.mongodb.net/?retryWrites=true&w=majority";
-var uri = "mongodb://localhost:27017/userDb" 
+uri = "mongodb+srv://Test:Test@pdf-cluster.obw3a.mongodb.net/?retryWrites=true&w=majority";
+// var uri = "mongodb://localhost:27017/userDb" 
 mongoose.connect(uri, ).then(()=>{
     console.log("DB connected");
 }).catch((err)=>{
@@ -33,12 +33,14 @@ var saveList = [ {
     }
 }];
 var newChat = false
-var email = "abc@test.com";
+var email = "ert@test.com";
 const a =async ()=>{
   let result =  await User.findOne({email:email});
-  console.log("1:",result.length)
+  
   let result2 =  await User.find({email:email});
-  console.log("2: ",result2.length)
+  // console.log(result2)
+  console.log("2: ",result2[0].article)
+  
 }
     
 a();

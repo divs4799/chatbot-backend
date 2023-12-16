@@ -154,7 +154,7 @@ router.post("/saveData", async (req,res)=>{
         description : chat_description,
         messages:saveList
     }
-    result.article.push(Chat);
+    result[0].article.push(Chat);
     
    let newResult = await User.findOneAndUpdate({email:email},{article:result.article});
    await console.log(newResult);

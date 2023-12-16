@@ -22,7 +22,7 @@ let {name,email,password} = req.body;
 
 name =name.trim();
 email = email.trim();
-email = email.toLowercase();
+email = email.toLowerCase();
 password = password.trim();
 
 if(name =="" || email ==""|| password ==""){
@@ -87,7 +87,7 @@ if(name =="" || email ==""|| password ==""){
 
 router.post('/signin',(req,res)=>{
 let {email,password} = req.body;
-email = email.toLowercase();
+email = email.toLowerCase();
 User.find({email}).then(resultData=>{
     
 

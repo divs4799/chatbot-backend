@@ -63,6 +63,7 @@ if(name =="" || email ==""|| password ==""){
                     article:[]
                 })
                 user1.save().then(result=>{
+                    console.log(result)
                     res.json({
                         status: "SUCCESS",
                         message :"user Saved",
@@ -127,6 +128,7 @@ User.find({email}).then(resultData=>{
 router.post("/saveData", async (req,res)=>{
     var chatId;
     var {saveList,email} = req.body;
+    console.log(email);
     // console.log(saveList);
     // console.log("length",saveList.length)
     
@@ -137,35 +139,37 @@ router.post("/saveData", async (req,res)=>{
             message:"Your Chat is too short to save",
         })
     }else{
-        // console.log(saveList);
+        
         
         var chat_title= saveList[1].text;
         var chat_description = saveList[1].text.substring(0,20)
-        let result = await User.find({email:email});
-        if(result.length == 0){
-            chatId = 0;
-        }else{
-            chatId = result[0].article.length+1;
+        var Chat={};
 
-        }
-        var Chat = {
-        chatId:chatId,
-        title:chat_title,
-        time : new Date(),
-        description : chat_description,
-        messages:saveList
-    }
-    console.log(result[0])
-    result[0].article.push(Chat);
-    
-   let newResult = await User.findOneAndUpdate({email:email},{article:result[0].article});
-   await console.log("result : ",newResult);
-    res.json({
-        status:"SUCCESS",
-        message:"Your Chat was sucessfully stored in database",
-        data: newResult
-    })
-   
+        User.find({email:email}).then((result)=>{
+            console.log(result)
+            if(result.length == 0){
+                chatId = 0;
+            }else{
+                chatId = result[0].article.length+1;
+            }
+            Chat = {
+                chatId:chatId,
+                title:chat_title,
+                time : new Date(),
+                description : chat_description,
+                messages:saveList
+            }
+
+            result[0].article.push(Chat);
+            User.findOneAndUpdate({email:email},{article:result[0].article}).then((newResult)=>{
+                    // console.log("result : ",newResult);
+                    res.json({
+                        status:"SUCCESS",
+                        message:"Your Chat was sucessfully stored in database",
+                        data: newResult
+                    })
+            }).catch((error)=>{console.log("error in updating",error)})
+        }).catch((error)=>{console.log(error);})
     }
 
 })

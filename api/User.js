@@ -59,7 +59,8 @@ if(name =="" || email ==""|| password ==""){
                 const user1 = new User({
                     username : name,
                     email: email,
-                    password: hashed
+                    password: hashed,
+                    article:[]
                 })
                 user1.save().then(result=>{
                     res.json({
